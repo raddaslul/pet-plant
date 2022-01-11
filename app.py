@@ -42,7 +42,7 @@ def save_reg():
     }
     db.pet_plant.insert_one(doc)
 
-    return jsonify({'msg': '저장 완료!'})
+    return jsonify({'msg': '저장을 완료하였습니다.'})
 
 @app.route('/api/delete', methods=['POST'])
 def delete_review():
@@ -50,7 +50,7 @@ def delete_review():
 
     db.pet_plant.delete_one({'name': name_recieve})
 
-    return jsonify({'msg': '삭제 완료!!'})
+    return jsonify({'msg': '삭제가 완료되었습니다.'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
