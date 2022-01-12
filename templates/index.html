@@ -1,226 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-
-    <title>My Plant</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
-
-    <style>
-/*my식물 CSS 시작 */
-        * {
-            font-family: 'Gamja Flower', cursive;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-        }
-
-        .btn-success {
-            background-color: saddlebrown;
-            margin: 10px;
-        }
-
-        .jumbotron {
-            position: relative;
-        }
-        .jumbotron::before {
-            content: url("");
-            background: url("https://mblogthumb-phinf.pstatic.net/MjAxNjExMTVfMjcg/MDAxNDc5MTg2NzA3Mzg1.rGULH9Vud2ZN8LUU7REp4Y6bRMA96smoImnhyB1yEeEg.wZqXhSfncvovrc-PYro5pu62s_MMgw-TMJJdBUUs_-cg.PNG.rimiy/%EC%8A%AC%EB%9D%BC%EC%9D%B4%EB%93%9C4.PNG?type=w800");
-            background-size: cover;
-            opacity: 0.25;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            right: 0px;
-            bottom: 0px;
-        }
-
-        .posting-box > .custom-file > .custom-file-input{
-            margin-bottom: 20px;
-        }
-
-        .button_reg{
-            background-color: saddlebrown;
-            border-radius: 25%;
-            color: white;
-            cursor: pointer;
-        }
-
-        .button_reg:hover{
-            background-color: green;
-        }
-
-        .reg {
-            display: flex;
-            padding: 40px;
-            flex-wrap: wrap;
-        }
-
-        img {
-            width : 300px;
-            height: 400px;
-            object-fit: fill;
-        }
-
-        .reg_table {
-            display: flex;
-            border: solid lightgray;
-            width: 600px;
-            margin-right: 20px;
-            margin-bottom: 20px;
-        }
-
-        .reg_name {
-            width: 295px;
-            height:50px;
-            border-bottom: solid lightgray;
-            padding: 10px 10px;
-            font-size: 20px;
-        }
-
-        .reg_review {
-            width: 100%;
-            height:320px;
-            padding: 10px 10px;
-            font-size: 18px;
-        }
-
-        .btn-link {
-            padding: 0;
-            margin-left: 10px;
-        }
-/*my식물 CSS 끝        */
-    </style>
-
-    <script>
-// my식물 기능 시작
-        $(document).ready(function () {
-            bsCustomFileInput.init()
-            listing()
-        })
-
-// my식물 보여주기
-        function listing() {
-            $.ajax({
-                type: "GET",
-                url: "/api/reg",
-                data: {},
-                success: function (response) {
-                    let plant = response['all_plants']
-                    for (let i = 0; i < plant.length; i ++) {
-                        let name = plant[i]['name']
-                        let review = plant[i]['review']
-                        let file = plant[i]['file']
-
-                        let temp_html = `<div class="reg_table">
-                                            <div style="border-right: solid lightgray"><img src="../static/${file}"></div>
-                                            <div>
-                                                <div class="reg_name">${name}</div>
-                                                <div class="reg_review">${review}</div>
-                                                <button type="button" class="btn btn-link" onclick="deleteReview('${name}')">삭제</button>
-                                            </div>
-                                        </div>`
-
-                        $('#reg-box').append(temp_html)
-                    }
-                }
-            })
-        }
-
-// my식물 저장하기
-        function posting() {
-            let name = $('#name').val()
-            let review = $("#review").val()
-
-            let file = $('#file')[0].files[0]
-            let form_data = new FormData()
-
-            form_data.append("file_give", file)
-            form_data.append("name_give", name)
-            form_data.append("review_give", review)
-
-            $.ajax({
-                type: "POST",
-                url: "/api/reg",
-                data: form_data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.reload()
-                }
-            });
-        }
-
-// my식물 삭제하기
-        function deleteReview(name) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/delete',
-                    data: {name_give:name},
-                    success: function (response) {
-                        alert(response['msg']);
-                        window.location.reload()
-                    }
-                });
-        }
-// my식물 기능 끝
-    </script>
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant_main</title>
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/6a99101cff.js" crossorigin="anonymous"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Jquery cookie js 등 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="../static/css/main.css">
 </head>
-
 <body>
-<!--my식물 html 시작-->
-    <div class="header">
-        <h1 style="color: mediumseagreen">My plant</h1>
-        <div>
-            <button type="button" class="btn btn-success">님</button>
-            <button type="button" class="btn btn-success">로그아웃</button>
-        </div>
+  <nav>
+    <div class="contain">
+      <div class="logo">
+        <img src="../static/img/plant_icon3.png" alt="logo">
+        <span class="logo_span">PLANT<br>DIARY</span>
+      </div>
+      <div class="user_box">
+        <a class="user" href="#" ><!--<sapn class="nav_userid"></sapn>--></a>
+        <span class="logout" onclick="logout()">로그아웃</span>
+      </div>
     </div>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 style="color:saddlebrown">나의 식물 일기</h1>
-            <div class="posting-box">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="file">
-                    <label class="custom-file-label" for="file">사진 선택하기</label>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="name" placeholder="식물 이름">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" id="review" rows="5" placeholder="리뷰"></textarea>
-                    </div>
-                    <button onclick="posting()" class="button_reg">등록하기</button>
-                </div>
-            </div>
+  </nav>
+
+  <section class="main">
+    <div class="main_bg">
+      <img src="../static/img/bg7.jpg" alt="bg1">
+      <div class="main_box" >
+        <h2 class="main_title">PLANT_DIARY</h2>
+        <button class="main_login_btn" onclick="enter()">둘러보기</button>
+      </div>
+      
+      <div class="login_box hidden " id="user_login" >
+        <div class="input_box">
+          <h3 class="login_title">로그인</h3>
+          <p class="userid">아 이 디 :
+            <input class="input_userid" type="text" placeholder="아이디를 입력하세요"></p>
+          <p class="userpw">비밀번호 :
+            <input class="input_userpw" type="password" placeholder="비밀번호를 입력하세요"></p>
+          <button class="login_btn" onclick="login()">로그인</button>
+          <a class="move_func" onclick="regist_move()">회원이 아니신가요? 회원가입 하러가기</a>
         </div>
+      </div>
+
+      <div class="login_box hidden" id="user_regist" >
+        <div class="input_box">
+          <h3 class="login_title">회원가입</h3>
+          <p class="userid">아이디 : <span class="option op_id">아이디는 4-12자 이내로 작성해주세요</span>
+            <input class="input_userid" type="text" placeholder="아이디를 입력하세요"></p>
+          <button class="userid_dup" onclick="userid_dup()">중복확인</button>
+
+          <p class="userpw">비밀번호 : <br><span class="option op_pw">영문과 숫자 조합의 8-20자 이내의 비밀번호를 설정해주세요</span>
+            <input class="input_userpw" type="password" placeholder="비밀번호를 입력하세요"></p>
+
+          <p class="userpw_re">비밀번호 확인 : <span class="option op_pw_re">비밀번호를 다시 한 번 입력해주세요</span>
+            <input class="input_userpw_re"  type="password" placeholder="비밀번호 재입력"></p>
+          <button class="regist_btn" onclick="regist()">회원가입</button>
+          <a class="move_func" onclick="login_move()">회원이신가요? 로그인 하러가기</a>
+        </div>
+      </div>
+
+
+      <div class="welcome ">
+        <div class="welcome_box">
+          <h3 class="welcome_title">환영합니다<!--<span class="welcome_userid">--></h3>
+          <div class="welcome_link">
+            <a href="{{url_for('myplant')}}"><p class="my_plant">MY 식물</p></a>
+            <a href="#"><p class="search_plant">식물찾기</p></a>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="reg" id="reg-box"></div>
-<!--my식물 html 끝-->
+  </section>
+  <script src="../static/js/main.js"></script>
 </body>
 </html>
