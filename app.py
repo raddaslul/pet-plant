@@ -12,11 +12,13 @@ from datetime import datetime
 def home():
     return render_template('index.html')
 
+#my식물 보여주기
 @app.route('/api/reg', methods=['GET'])
 def show_reg():
     plant = list(db.pet_plant.find({}, {'_id': False}))
     return jsonify({'all_plants': plant})
 
+#my식물 저장하기
 @app.route('/api/reg', methods=['POST'])
 def save_reg():
     name_receive = request.form['name_give']
@@ -44,6 +46,7 @@ def save_reg():
 
     return jsonify({'msg': '저장을 완료하였습니다.'})
 
+#my식물 삭제하기
 @app.route('/api/delete', methods=['POST'])
 def delete_review():
     name_recieve = request.form['name_give']

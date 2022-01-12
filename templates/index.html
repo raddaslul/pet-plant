@@ -28,6 +28,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
     <style>
+/*my식물 CSS 시작 */
         * {
             font-family: 'Gamja Flower', cursive;
         }
@@ -111,14 +112,17 @@
             padding: 0;
             margin-left: 10px;
         }
+/*my식물 CSS 끝        */
     </style>
 
     <script>
+// my식물 기능 시작
         $(document).ready(function () {
             bsCustomFileInput.init()
             listing()
         })
 
+// my식물 보여주기
         function listing() {
             $.ajax({
                 type: "GET",
@@ -146,6 +150,7 @@
             })
         }
 
+// my식물 저장하기
         function posting() {
             let name = $('#name').val()
             let review = $("#review").val()
@@ -171,6 +176,7 @@
             });
         }
 
+// my식물 삭제하기
         function deleteReview(name) {
                 $.ajax({
                     type: 'POST',
@@ -182,11 +188,13 @@
                     }
                 });
         }
+// my식물 기능 끝
     </script>
 
 </head>
 
 <body>
+<!--my식물 html 시작-->
     <div class="header">
         <h1 style="color: mediumseagreen">My plant</h1>
         <div>
@@ -213,5 +221,6 @@
         </div>
     </div>
     <div class="reg" id="reg-box"></div>
+<!--my식물 html 끝-->
 </body>
 </html>
