@@ -32,15 +32,10 @@
         * {
             font-family: 'Gamja Flower', cursive;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-        }
 
-        .btn-success {
-            background-color: saddlebrown;
-            margin: 10px;
+        .contain {
+            width: 1200px;
+            margin: 0 auto;
         }
 
         .jumbotron {
@@ -190,21 +185,26 @@
         }
 // my식물 기능 끝
     </script>
-
+    <link rel="stylesheet" href="../static/css/nav.css">
 </head>
 
 <body>
 <!--my식물 html 시작-->
-    <div class="header">
-        <h1 style="color: mediumseagreen">My plant</h1>
-        <div>
-            <button type="button" class="btn btn-success">님</button>
-            <button type="button" class="btn btn-success">로그아웃</button>
+    <nav>
+        <div class="contain">
+            <div class="logo">
+                <img src="../static/img/plant_icon3.png" alt="logo">
+                <span class="logo_span">PLANT<br>DIARY</span>
+            </div>
+            <div class="user_box">
+                <a class="user" href="#"><!--<sapn class="nav_userid"></sapn>--></a>
+                <span class="logout" onclick="logout()">로그아웃</span>
+            </div>
         </div>
-    </div>
+    </nav>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 style="color:saddlebrown">나의 식물 일기</h1>
+            <h1 style="color:saddlebrown">우리의 식물 일기</h1>
             <div class="posting-box">
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="file">
