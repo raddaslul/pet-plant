@@ -8,8 +8,8 @@ db = client.dbsparta
 
 from datetime import datetime
 
-@app.route('/')
-def home():
+@app.route('/myplant')
+def myplant():
     return render_template('index.html')
 
 #my식물 보여주기
