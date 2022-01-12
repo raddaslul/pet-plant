@@ -23,8 +23,8 @@ SECRET_KEY = 'SPARTA'
 def home():
     return render_template('index.html')
 
-@app.route('/myplant')
-def myplant():
+@app.route('/shareplant')
+def shareplant():
     return render_template('myplant.html')
 
 
