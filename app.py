@@ -12,9 +12,9 @@ app = Flask(__name__)
 CORS(app)
 
 from pymongo import MongoClient
-client = MongoClient('localhost', 27017) # 로컬 사용 DB
+# client = MongoClient('localhost', 27017) # 로컬 사용 DB
+client = MongoClient('mongodb://test:test@localhost', 27017) # 서버 작동 DB
 db = client.dbsparta
-# client = MongoClient('mongodb://test:test@localhost', 27017) # 서버 작동 DB
 
 SECRET_KEY = 'SPARTA'
 
