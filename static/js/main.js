@@ -177,7 +177,7 @@ function login() {
                 if ($('nav .user_box').css('display')=='none'){
                     $('nav .user_box').show();
                     let nav_user = `<sapn class="nav_userid">${userid}님</sapn>`
-                    $('nav .user_box a.user').append(nav_user)
+                    $('nav .user_box .user').append(nav_user)
                 }
             } else {
                 alert(response['msg'])
