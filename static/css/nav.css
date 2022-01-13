@@ -47,7 +47,7 @@ nav .contain {
 .user_box .user { 
   margin-right: 10px;
 }
-.user_box .logout {
+.user_box span.logout {
   cursor: pointer;
 }
 
