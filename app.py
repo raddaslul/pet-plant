@@ -90,24 +90,24 @@ def sign_in():
 
 # 토큰받아서 만료시간 적용하는부분
 #
-@app.route('/api/timeover', methods=['GET'])
-def tokenTime():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        # token을 시크릿키로 디코딩합니다.
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        print(payload)
-
-        # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
-        userinfo = db.userinfo.find_one({'userid': payload['id']}, {'_id': 0})
-        print(userinfo)
-
-        return jsonify({'result': '토큰있음', 'userid': userinfo['userid']})
-    except jwt.ExpiredSignatureError:
-        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
-        return jsonify({'result': '로그인 만료', 'msg': '로그인 시간이 만료되었습니다.'})
-    except jwt.exceptions.DecodeError:
-        return jsonify({'result': '로그인 정보없음', 'msg': '로그인 정보가 존재하지 않습니다.'})
+# @app.route('/api/timeover', methods=['GET'])
+# def tokenTime():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         # token을 시크릿키로 디코딩합니다.
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         print(payload)
+#
+#         # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
+#         userinfo = db.userinfo.find_one({'userid': payload['id']}, {'_id': 0})
+#         print(userinfo)
+#
+#         return jsonify({'result': '토큰있음', 'userid': userinfo['userid']})
+#     except jwt.ExpiredSignatureError:
+#         # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
+#         return jsonify({'result': '로그인 만료', 'msg': '로그인 시간이 만료되었습니다.'})
+#     except jwt.exceptions.DecodeError:
+#         return jsonify({'result': '로그인 정보없음', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
 # my식물 보여주기
