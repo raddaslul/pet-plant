@@ -195,18 +195,18 @@ function logout(){
     window.location.href = '/';
 }
 
- // 토큰받아서 만료시간 데이터받는
-$(document).ready(function () {
-          tokenTime();
-});
-
-function tokenTime() {
-  $.ajax({
-      type: "GET",
-      url: "/api/timeover",
-      data: {},
-      success: function (response) {
-          console.log(response["result"]);
-      }
-  })
-}
+//  // 토큰받아서 만료시간 데이터받는
+// $(document).ready(function () {
+//           tokenTime();
+// });
+//
+// function tokenTime() {
+//   $.ajax({
+//       type: "GET",
+//       url: "/api/timeover",
+//       data: {},
+//       success: function (response) {
+//           console.log(response["result"]);
+//       }
+//   })
+// }
