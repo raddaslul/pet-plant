@@ -2,12 +2,14 @@ import jwt
 import datetime
 import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask_cors import CORS
 from datetime import datetime, timedelta
 import requests
-
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
+CORS(app)
 
 from pymongo import MongoClient
 client = MongoClient('localhost', 27017) # 로컬 사용 DB
@@ -154,7 +156,42 @@ def delete_review():
     return jsonify({'msg': '삭제가 완료되었습니다.'})
 
 
+# search식물 검색기능
+@app.route('/search')
+def search():
+    return render_template('searchplant.html')
 
+@app.route('/searchplant', methods=['get'])
+def searching_main():
+    searchlist = []
+    keyword = request.args.get('keyword_give')
+    # print(keyword)
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data_main = requests.get("https://www.fuleaf.com/search?term=" + keyword, headers=headers)
+    # print(data_main)
+    soup_main = BeautifulSoup(data_main.text, 'html.parser')
+    # print(soup_main)
+    plants_main = soup_main.select('#plants_list > ul > div')
+    # print(plants_main)
+    for plant in plants_main:
+        imgs = plant.select_one('a > div.plant__image')
+        # print(imgs)
+        img_plants = str(imgs).split('url(')[1].split(');')[0]
+        title_plants = plant.select_one('div.plant__title-flex > h3').text
+        # print(img_plants, title_plants)
+
+        code = str(plant).split('count/')[1].split('"><div')[0]
+        data_desc = requests.get(f"https://www.fuleaf.com/plants/detail/{code}", headers=headers)
+        soup_desc = BeautifulSoup(data_desc.text, 'html.parser')
+        plants_descs = str(soup_desc).split('intro">')[1].split('</h3>')[0]
+        # print(plants_descs)
+        dict = {'img_plant': img_plants, 'title_plant': title_plants, 'plants_desc': plants_descs}
+        # print(dict)
+        searchlist.append(dict)
+        print(searchlist)
+    # print(img_plants, title_plants, plants_descs)
+    return jsonify({'result' : searchlist})
 
 
 if __name__ == '__main__':
