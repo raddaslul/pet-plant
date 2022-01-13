@@ -41,7 +41,7 @@ def check_dup():
     # DB에 넘어온 아이디를 찾아줌 : username이 findone이 된다면 bool값으로 true출력
     # 없으면 bool값으로 false출력됨 // find하는 db폴더이름 확인!!!
     exists = bool(db.userinfo.find_one({"userid": userid_receive}))
-    print(userid_receive)
+    # print(userid_receive)
     return jsonify({'result': 'success', 'exists': exists})
 
 
