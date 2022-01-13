@@ -23,7 +23,7 @@
         <span class="logo_span">PLANT<br>DIARY</span>
       </a>
       <div class="user_box">
-        <a class="user" href="#" ><!--<sapn class="nav_userid"></sapn>--></a>
+        <a class="user" href="#" style="cursor: default"><!--<sapn class="nav_userid"></sapn>--></a>
         <span class="logout" onclick="logout()">로그아웃</span>
       </div>
     </div>
@@ -72,7 +72,7 @@
           <h3 class="welcome_title">환영합니다<!--<span class="welcome_userid">--></h3>
           <div class="welcome_link">
             <a href="{{url_for('shareplant')}}"><p class="my_plant">Share 식물</p></a>
-            <a href="#"><p class="search_plant">식물찾기</p></a>
+            <a href="{{url_for('search')}}"><p class="search_plant">식물찾기</p></a>
           </div>
         </div>
       </div>
