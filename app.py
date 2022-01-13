@@ -9,10 +9,8 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 from pymongo import MongoClient
-# 로그인때문에 DB에 보안이 필요함-> id, pw, ip주소 적용한 mongoDB연결코드
-client = MongoClient('mongodb://13.209.77.90', 27017, username="test", password="test")
+client = MongoClient('localhost', 27017) # 로컬 사용 DB
 db = client.dbsparta
-# client = MongoClient('localhost', 27017) # 로컬 사용 DB
 # client = MongoClient('mongodb://test:test@localhost', 27017) # 서버 작동 DB
 
 SECRET_KEY = 'SPARTA'
@@ -85,6 +83,28 @@ def sign_in():
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
+
+# 토큰받아서 만료시간 적용하는부분
+#
+@app.route('/api/timeover', methods=['GET'])
+def tokenTime():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        # token을 시크릿키로 디코딩합니다.
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)
+
+        # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
+        userinfo = db.userinfo.find_one({'userid': payload['id']}, {'_id': 0})
+        print(userinfo)
+
+        return jsonify({'result': '토큰있음', 'userid': userinfo['userid']})
+    except jwt.ExpiredSignatureError:
+        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
+        return jsonify({'result': '로그인 만료', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': '로그인 정보없음', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
 # my식물 보여주기
