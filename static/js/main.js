@@ -75,7 +75,6 @@ function userid_dup() {
     })
 }
 
-
 // 회원가입
 function regist() {
     let userid = $("#user_regist .input_userid").val()
@@ -194,4 +193,20 @@ function login() {
 function logout(){
     $.removeCookie('mytoken', {path: '/'});
     window.location.href = '/';
+}
+
+ // 토큰받아서 만료시간 데이터받는
+$(document).ready(function () {
+          tokenTime();
+});
+
+function tokenTime() {
+  $.ajax({
+      type: "GET",
+      url: "/api/timeover",
+      data: {},
+      success: function (response) {
+          console.log(response["result"]);
+      }
+  })
 }
